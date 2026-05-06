@@ -15,3 +15,8 @@ node_modules/
 
 .env
 .env.*
+
+# 离线镜像大包与本地下载 zip（勿提交）
+offline-bundle/*.tar
+offline-bundle/*.zip
+zebin-emailauto-offline.zip

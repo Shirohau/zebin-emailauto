@@ -1,0 +1,44 @@
+离线部署说明（群晖 / NAS）
+========================
+
+本目录包含：
+  zebin-emailauto-images.tar   两个镜像合并导出（api + web）
+  docker-compose.yml           仅使用镜像，不含源码构建
+  env.example                  复制为 .env 后填写真实配置
+
+NAS 上步骤
+----------
+
+1. 将整个 offline-bundle 文件夹上传到 NAS（例如 /volume1/docker/zebin-emailauto）。
+
+2. SSH 登录 NAS，进入该目录：
+   cd /volume1/docker/zebin-emailauto
+
+3. 导入镜像（体积较大，需等待结束）：
+   docker load -i zebin-emailauto-images.tar
+
+   导入成功后应能看到：
+   zebin-emailauto-api:latest
+   zebin-emailauto-web:latest
+
+4. 配置环境变量：
+   cp env.example .env
+   vi .env
+
+   务必修改：DJANGO_SECRET_KEY、DJANGO_ALLOWED_HOSTS、DJANGO_CSRF_TRUSTED_ORIGINS、SMTP_*、WEB_PORT（可选）。
+
+5. 启动（不要加 --build，离线环境无 Dockerfile）：
+   docker compose up -d
+
+   若旧版只有 docker-compose 命令：
+   docker-compose up -d
+
+6. 首次创建管理员账号：
+   docker compose exec api python manage.py createsuperuser
+
+7. 浏览器访问：http://NAS的IP:端口（默认 WEB_PORT=8080）
+
+更新镜像时重新导入新的 tar 后执行：
+   docker compose down
+   docker load -i zebin-emailauto-images.tar
+   docker compose up -d
