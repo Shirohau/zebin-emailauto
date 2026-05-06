@@ -24,8 +24,7 @@ NAS 上步骤
 4. 配置环境变量：
    cp env.example .env
    vi .env
-
-   务必修改：DJANGO_SECRET_KEY、DJANGO_ALLOWED_HOSTS、DJANGO_CSRF_TRUSTED_ORIGINS、SMTP_*、WEB_PORT（可选）。
+   必改：SMTP_USER、SMTP_PASS。若 NAS 地址不是 http://192.168.1.10:8080，请同步修改 ALLOWED_HOSTS、DJANGO_CSRF_TRUSTED_ORIGINS、DJANGO_CORS_ALLOWED_ORIGINS 中的 IP 与端口（与 WEB_PORT 一致）。
 
 5. 启动（不要加 --build，离线环境无 Dockerfile）：
    docker compose up -d
